@@ -62,8 +62,8 @@ export function DashboardFilters({
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="risk">Sort by Risk</SelectItem>
-          <SelectItem value="level-asc">Level: Critical to Full</SelectItem>
-          <SelectItem value="level-desc">Level: Full to Critical</SelectItem>
+          <SelectItem value="level-asc">Level: Critical to Stable</SelectItem>
+          <SelectItem value="level-desc">Level: Stable to Critical</SelectItem>
           <SelectItem value="weekly-change">Weekly Change</SelectItem>
           <SelectItem value="name">Name A-Z</SelectItem>
         </SelectContent>
