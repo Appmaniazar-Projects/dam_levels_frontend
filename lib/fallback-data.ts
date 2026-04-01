@@ -91,9 +91,14 @@ export const fallbackDams: DamData[] = [
 
 export const fallbackDataInfo = {
   latest_update: new Date().toISOString(),
-  total_dams: fallbackDams.length,
+  total_dams: 175,  // Actual number from scraper
+  data_range: { 
+    start: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days ago
+    end: new Date().toISOString() 
+  },
   update_frequency: "Weekly",
-  weekly_calculation: "Current week level - Previous week level"
+  weekly_calculation: "Current week level - Previous week level",
+  yearly_calculation: "Current year level - Previous year level"
 }
 
 // Generate simple fallback history
