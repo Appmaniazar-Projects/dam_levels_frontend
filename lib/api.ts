@@ -2,7 +2,7 @@ import type { DamData, DamHistory } from "./types"
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3001"
 
-if (typeof window !== "undefined") {
+if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
   console.log("🌊 Dam Levels API Base URL:", API_BASE_URL || "(not configured)")
 }
 
