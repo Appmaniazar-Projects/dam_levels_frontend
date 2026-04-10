@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { RiskBadge } from "@/components/risk-badge"
+import { DataStatusBadge } from "@/components/data-status-badge"
 import { ChangeIndicator } from "@/components/change-indicator"
 import { LevelGauge } from "@/components/level-gauge"
 import { MapPin } from "lucide-react"
@@ -31,7 +32,7 @@ export function DamCard({ dam }: DamCardProps) {
       <Card className="transition-all duration-200 hover:shadow-md hover:border-primary/30 group-focus-visible:ring-2 group-focus-visible:ring-ring">
         <CardHeader className="pb-0">
           <div className="flex items-start justify-between gap-2">
-            <div className="flex flex-col gap-1 min-w-0">
+            <div className="flex flex-col gap-1 min-w-0 flex-1">
               <CardTitle className="text-base font-semibold text-foreground truncate">
                 {dam.dam || 'Unknown Dam'}
               </CardTitle>
@@ -40,7 +41,10 @@ export function DamCard({ dam }: DamCardProps) {
                 <span className="text-xs truncate">{dam.region || 'Unknown Region'}</span>
               </div>
             </div>
-            <RiskBadge risk={dam.risk} />
+            <div className="flex flex-col items-end gap-1">
+              <RiskBadge risk={dam.risk} />
+              <DataStatusBadge status={dam.data_status} lastSeen={dam.last_seen} compact />
+            </div>
           </div>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">

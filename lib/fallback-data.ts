@@ -1,4 +1,4 @@
-import type { DamData, DamHistory } from "./types"
+import type { DamData, DamHistory, DataInfo, ProvinceStatus, DataFreshness } from "./types"
 
 // Simple, clean fallback data
 export const fallbackDams: DamData[] = [
@@ -89,16 +89,91 @@ export const fallbackDams: DamData[] = [
   }
 ]
 
-export const fallbackDataInfo = {
+export const fallbackDataInfo: DataInfo = {
   latest_update: new Date().toISOString(),
-  total_dams: 175,  // Actual number from scraper
+  total_dams: 218,  // Current total from API
   data_range: { 
     start: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days ago
     end: new Date().toISOString() 
   },
   update_frequency: "Weekly",
   weekly_calculation: "Current week level - Previous week level",
-  yearly_calculation: "Current year level - Previous year level"
+  yearly_calculation: "Current year level - Previous year level",
+  province_status: {
+    "Western Cape": {
+      updated: new Date().toISOString(),
+      fresh_dams: 47,
+      stale_dams: 0,
+      total_dams: 47,
+      status: "success"
+    },
+    "Eastern Cape": {
+      updated: new Date().toISOString(),
+      fresh_dams: 47,
+      stale_dams: 0,
+      total_dams: 47,
+      status: "success"
+    },
+    "Free State": {
+      updated: new Date().toISOString(),
+      fresh_dams: 21,
+      stale_dams: 0,
+      total_dams: 21,
+      status: "success"
+    },
+    "Gauteng": {
+      updated: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+      fresh_dams: 0,
+      stale_dams: 5,
+      total_dams: 5,
+      status: "failed",
+      failure_reason: "No dams scraped - DWS server issue"
+    },
+    "Kwazulu-Natal": {
+      updated: new Date().toISOString(),
+      fresh_dams: 13,
+      stale_dams: 6,
+      total_dams: 19,
+      status: "partial",
+      failure_reason: "Only 13/19 dams scraped"
+    },
+    "Limpopo": {
+      updated: new Date().toISOString(),
+      fresh_dams: 29,
+      stale_dams: 0,
+      total_dams: 29,
+      status: "success"
+    },
+    "Mpumalanga": {
+      updated: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+      fresh_dams: 8,
+      stale_dams: 15,
+      total_dams: 23,
+      status: "partial",
+      failure_reason: "Only 8/23 dams scraped"
+    },
+    "North West": {
+      updated: new Date().toISOString(),
+      fresh_dams: 27,
+      stale_dams: 1,
+      total_dams: 28,
+      status: "success"
+    },
+    "Northern Cape": {
+      updated: new Date().toISOString(),
+      fresh_dams: 4,
+      stale_dams: 2,
+      total_dams: 6,
+      status: "success"
+    }
+  },
+  data_freshness: {
+    fresh_dams: 196,
+    stale_dams: 24,
+    old_dams: 0,
+    historical_dams: 0,
+    last_successful_scrape: new Date().toISOString()
+  }
 }
 
 // Generate simple fallback history
