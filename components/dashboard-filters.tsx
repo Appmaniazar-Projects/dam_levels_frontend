@@ -18,6 +18,8 @@ interface DashboardFiltersProps {
   sortBy: string
   onSortByChange: (value: string) => void
   provinces: string[]
+  city: string
+  onCityChange: (value: string) => void
 }
 
 export function DashboardFilters({
@@ -28,6 +30,8 @@ export function DashboardFilters({
   sortBy,
   onSortByChange,
   provinces,
+  city,
+  onCityChange,
 }: DashboardFiltersProps) {
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
@@ -54,6 +58,17 @@ export function DashboardFilters({
               {p}
             </SelectItem>
           ))}
+        </SelectContent>
+      </Select>
+      <Select value={city} onValueChange={onCityChange}>
+        <SelectTrigger className="w-full sm:w-48" aria-label="Filter by city">
+          <SelectValue placeholder="All Cities" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">All Cities</SelectItem>
+          <SelectItem value="ct">Cape Town</SelectItem>
+          <SelectItem value="al">Gqeberha</SelectItem>
+          <SelectItem value="um">Durban</SelectItem>
         </SelectContent>
       </Select>
       <Select value={sortBy} onValueChange={onSortByChange}>

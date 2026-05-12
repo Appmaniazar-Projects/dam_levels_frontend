@@ -3,14 +3,17 @@ import type { DamData } from "@/lib/types"
 
 interface SummaryStatsProps {
   dams: DamData[]
+  filtered?: DamData[]
 }
 
-export function SummaryStats({ dams }: SummaryStatsProps) {
-  const total = dams.length
-  const criticalCount = dams.filter((d) => d.risk === "critical").length
-  const decliningCount = dams.filter((d) => d.weekly_change < 0).length
-  const stableCount = dams.filter((d) => d.risk === "stable").length
-  const avgLevel = total > 0 ? dams.reduce((sum, d) => sum + d.level, 0) / total : 0
+export function SummaryStats({ dams, filtered }: SummaryStatsProps) {
+  // Use filtered data if provided, otherwise use all dams
+  const dataToShow = filtered || dams
+  const total = dataToShow.length
+  const criticalCount = dataToShow.filter((d) => d.risk === "critical").length
+  const decliningCount = dataToShow.filter((d) => (d.weekly_change ?? 0) < 0).length
+  const stableCount = dataToShow.filter((d) => d.risk === "stable").length
+  const avgLevel = total > 0 ? dataToShow.reduce((sum, d) => sum + (d.level ?? 0), 0) / total : 0
 
   const stats = [
     {

@@ -165,7 +165,15 @@ export function DamDetails({ dam }: DamDetailsProps) {
             <div className="text-sm">
               <div className="font-medium mb-1">GPS Coordinates</div>
               <div className="text-muted-foreground">
-                {dam.latitude.toFixed(4)}°N, {dam.longitude.toFixed(4)}°W
+                {(() => {
+                  const latLabel = dam.latitude < 0 
+                    ? `${Math.abs(dam.latitude).toFixed(4)}°S` 
+                    : `${dam.latitude.toFixed(4)}°N`
+                  const lngLabel = dam.longitude > 0 
+                    ? `${dam.longitude.toFixed(4)}°E` 
+                    : `${Math.abs(dam.longitude).toFixed(4)}°W`
+                  return `${latLabel}, ${lngLabel}`
+                })()}
               </div>
               <div className="text-xs text-muted-foreground mt-1">
                 <a 

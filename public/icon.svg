@@ -1,26 +1,42 @@
 <svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
   <style>
     @media (prefers-color-scheme: light) {
-      .background { fill: black; }
-      .foreground { fill: white; }
+      .background { fill: #0ea5e9; }
+      .water { fill: #0284c7; }
+      .dam { fill: white; }
+      .waves { fill: #7dd3fc; }
     }
     @media (prefers-color-scheme: dark) {
-      .background { fill: white; }
-      .foreground { fill: black; }
+      .background { fill: #0c4a6e; }
+      .water { fill: #075985; }
+      .dam { fill: #e0f2fe; }
+      .waves { fill: #38bdf8; }
     }
   </style>
-  <g clip-path="url(#clip0_7960_43945)">
-    <rect class="background" width="180" height="180" rx="37" />
-    <g style="transform: scale(95%); transform-origin: center">
-      <path class="foreground"
-        d="M101.141 53H136.632C151.023 53 162.689 64.6662 162.689 79.0573V112.904H148.112V79.0573C148.112 78.7105 148.098 78.3662 148.072 78.0251L112.581 112.898C112.701 112.902 112.821 112.904 112.941 112.904H148.112V126.672H112.941C98.5504 126.672 86.5638 114.891 86.5638 100.5V66.7434H101.141V100.5C101.141 101.15 101.191 101.792 101.289 102.422L137.56 66.7816C137.255 66.7563 136.945 66.7434 136.632 66.7434H101.141V53Z" />
-      <path class="foreground"
-        d="M65.2926 124.136L14 66.7372H34.6355L64.7495 100.436V66.7372H80.1365V118.47C80.1365 126.278 70.4953 129.958 65.2926 124.136Z" />
-    </g>
-  </g>
-  <defs>
-    <clipPath id="clip0_7960_43945">
-      <rect width="180" height="180" fill="white" />
-    </clipPath>
-  </defs>
+  
+  <!-- Background circle -->
+  <circle class="background" cx="90" cy="90" r="90"/>
+  
+  <!-- Water waves -->
+  <path class="waves" d="M20 120 Q40 110, 60 120 T100 120 Q120 110, 140 120 T180 120 L180 180 L20 180 Z"/>
+  <path class="waves" d="M20 130 Q40 120, 60 130 T100 130 Q120 120, 140 130 T180 130 L180 180 L20 180 Z"/>
+  
+  <!-- Dam structure -->
+  <rect class="dam" x="65" y="70" width="50" height="60" rx="2"/>
+  
+  <!-- Dam details -->
+  <rect class="water" x="70" y="100" width="8" height="25"/>
+  <rect class="water" x="82" y="95" width="8" height="30"/>
+  <rect class="water" x="94" y="105" width="8" height="20"/>
+  <rect class="water" x="106" y="90" width="8" height="35"/>
+  
+  <!-- Water level indicator -->
+  <rect class="waves" x="65" y="85" width="50" height="3"/>
+  
+  <!-- Dam top -->
+  <rect class="dam" x="60" y="65" width="60" height="8" rx="2"/>
+  
+  <!-- Support beams -->
+  <rect class="dam" x="63" y="75" width="3" height="50"/>
+  <rect class="dam" x="114" y="75" width="3" height="50"/>
 </svg>
