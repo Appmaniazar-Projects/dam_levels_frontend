@@ -47,6 +47,17 @@ export function DashboardFilters({
           aria-label="Search dams by name"
         />
       </div>
+      <Select value={city} onValueChange={onCityChange}>
+        <SelectTrigger className="w-full sm:w-48" aria-label="Filter by city">
+          <SelectValue placeholder="All Cities" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">All Cities</SelectItem>
+          <SelectItem value="ct">Cape Town</SelectItem>
+          <SelectItem value="al">Gqeberha</SelectItem>
+          <SelectItem value="um">Durban</SelectItem>
+        </SelectContent>
+      </Select>
       <Select value={province} onValueChange={onProvinceChange}>
         <SelectTrigger className="w-full sm:w-48" aria-label="Filter by province">
           <SelectValue placeholder="All Provinces" />
@@ -58,17 +69,6 @@ export function DashboardFilters({
               {p}
             </SelectItem>
           ))}
-        </SelectContent>
-      </Select>
-      <Select value={city} onValueChange={onCityChange}>
-        <SelectTrigger className="w-full sm:w-48" aria-label="Filter by city">
-          <SelectValue placeholder="All Cities" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">All Cities</SelectItem>
-          <SelectItem value="ct">Cape Town</SelectItem>
-          <SelectItem value="al">Gqeberha</SelectItem>
-          <SelectItem value="um">Durban</SelectItem>
         </SelectContent>
       </Select>
       <Select value={sortBy} onValueChange={onSortByChange}>
