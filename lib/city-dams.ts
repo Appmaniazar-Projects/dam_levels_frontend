@@ -11,7 +11,7 @@ export const CITY_SYSTEMS: Record<string, CitySystem> = {
     label: "Cape Town",
     dams: [
       "Berg River Dam", "Steenbras-Upper Dam", "Steenbras-Lower Dam",
-      "Theewaterskloof Dam", "Voëlvlei Dam", "Wemmershoek Dam"
+      "Theewaterskloof Dam", "Voelvlei Dam", "Wemmershoek Dam"
     ]
   },
   al: {
