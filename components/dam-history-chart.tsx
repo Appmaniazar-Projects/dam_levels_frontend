@@ -16,7 +16,6 @@ const riskChartColor: Record<RiskLevel, { stroke: string; fill: string }> = {
   critical: { stroke: "#dc2626", fill: "#fecaca" },
   warning: { stroke: "#ea580c", fill: "#fed7aa" },
   stable: { stroke: "#2563eb", fill: "#bfdbfe" },
-  full: { stroke: "#059669", fill: "#a7f3d0" },
 }
 
 interface DamHistoryChartProps {
@@ -27,10 +26,25 @@ interface DamHistoryChartProps {
 export function DamHistoryChart({ data, risk }: DamHistoryChartProps) {
   const colors = riskChartColor[risk]
 
-  const formattedData = data.map((d) => ({
-    ...d,
-    dateLabel: format(parseISO(d.date), "d MMM"),
-  }))
+  const formattedData = data
+    .filter(
+      (d) =>
+        typeof d.date === "string" &&
+        !Number.isNaN(Date.parse(d.date)) &&
+        typeof d.level === "number"
+    )
+    .map((d) => ({
+      ...d,
+      dateLabel: format(parseISO(d.date), "d MMM"),
+    }))
+
+  if (formattedData.length === 0) {
+    return (
+      <div className="h-72 w-full flex items-center justify-center rounded-lg border border-dashed border-muted bg-muted/10">
+        <p className="text-sm text-muted-foreground">No historical data available yet.</p>
+      </div>
+    )
+  }
 
   return (
     <div className="h-72 w-full">
@@ -68,10 +82,14 @@ export function DamHistoryChart({ data, risk }: DamHistoryChartProps) {
             content={({ active, payload }) => {
               if (!active || !payload?.length) return null
               const point = payload[0]
+              const payloadDate = point.payload?.date
+              if (typeof payloadDate !== "string" || Number.isNaN(Date.parse(payloadDate))) {
+                return null
+              }
               return (
                 <div className="rounded-lg border border-border bg-card px-3 py-2 shadow-lg">
                   <p className="text-xs text-muted-foreground">
-                    {format(parseISO(point.payload.date), "d MMM yyyy")}
+                    {format(parseISO(payloadDate), "d MMM yyyy")}
                   </p>
                   <p className="text-sm font-semibold text-foreground">
                     {(point.value as number).toFixed(1)}%
