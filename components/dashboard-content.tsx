@@ -13,6 +13,7 @@ import { SummaryStats } from "@/components/summary-stats"
 import { ErrorState } from "@/components/error-state"
 import { DataInfo } from "@/components/data-info"
 import { Droplets } from "lucide-react"
+import { CITY_SYSTEMS } from "@/lib/city-dams"
 
 const RISK_ORDER: Record<RiskLevel, number> = {
   critical: 0,
@@ -31,7 +32,22 @@ export function DashboardContent() {
 
   const [search, setSearch] = useState("")
   const [province, setProvince] = useState("all")
+  const [city, setCity] = useState("all")
   const [sortBy, setSortBy] = useState("risk")
+
+  const handleProvinceChange = (value: string) => {
+    setProvince(value)
+    if (value !== "all") {
+      setCity("all")
+    }
+  }
+
+  const handleCityChange = (value: string) => {
+    setCity(value)
+    if (value !== "all") {
+      setProvince("all")
+    }
+  }
 
   const provinces = useMemo(() => {
     if (!dams) return []
@@ -52,8 +68,13 @@ export function DashboardContent() {
       )
     }
 
-    // Filter by province
-    if (province !== "all") {
+    // Filter by city water supply system (takes precedence over province)
+    if (city !== "all") {
+      const cityDams = new Set(
+        CITY_SYSTEMS[city as keyof typeof CITY_SYSTEMS]?.dams ?? []
+      )
+      result = result.filter((d) => cityDams.has(d.dam))
+    } else if (province !== "all") {
       result = result.filter((d) => d.region === province)
     }
 
@@ -77,7 +98,13 @@ export function DashboardContent() {
     }
 
     return result
-  }, [dams, search, province, sortBy])
+  }, [dams, search, province, city, sortBy])
+
+  const activeFilterLabel = city !== "all"
+    ? CITY_SYSTEMS[city as keyof typeof CITY_SYSTEMS]?.label || city
+    : province !== "all"
+      ? province
+      : null
 
   // Show error only if no data at all
   if (error && !dams) {
@@ -107,7 +134,9 @@ export function DashboardContent() {
         search={search}
         onSearchChange={setSearch}
         province={province}
-        onProvinceChange={setProvince}
+        onProvinceChange={handleProvinceChange}
+        city={city}
+        onCityChange={handleCityChange}
         sortBy={sortBy}
         onSortByChange={setSortBy}
         provinces={provinces}
@@ -116,14 +145,10 @@ export function DashboardContent() {
       {/* Count */}
       {!isLoading && (
         <p className="text-sm text-muted-foreground">
-          Showing <span className="font-medium text-foreground">{filtered.length}</span>{" "}
-          {filtered.length === 1 ? "dam" : "dams"}
-          {province !== "all" && (
-            <>
-              {" "}
-              in <span className="font-medium text-foreground">{province}</span>
-            </>
-          )}
+          Showing <span className="font-medium text-foreground">{filtered.length}</span> {filtered.length === 1 ? "dam" : "dams"}
+          {activeFilterLabel ? (
+            <> in <span className="font-medium text-foreground">{activeFilterLabel}</span></>
+          ) : null}
         </p>
       )}
 

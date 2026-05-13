@@ -9,6 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Search } from "lucide-react"
+import { CITY_OPTIONS } from "@/lib/city-dams"
 
 interface DashboardFiltersProps {
   search: string
@@ -53,9 +54,11 @@ export function DashboardFilters({
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="all">All Cities</SelectItem>
-          <SelectItem value="ct">Cape Town</SelectItem>
-          <SelectItem value="al">Gqeberha</SelectItem>
-          <SelectItem value="um">Durban</SelectItem>
+          {CITY_OPTIONS.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
         </SelectContent>
       </Select>
       <Select value={province} onValueChange={onProvinceChange}>

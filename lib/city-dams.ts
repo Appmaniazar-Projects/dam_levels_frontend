@@ -31,3 +31,8 @@ export const CITY_SYSTEMS: Record<string, CitySystem> = {
 }
 
 export const CITY_CODES = Object.keys(CITY_SYSTEMS)
+
+export const CITY_OPTIONS = CITY_CODES.map((code) => ({
+  value: code,
+  label: CITY_SYSTEMS[code as keyof typeof CITY_SYSTEMS].label,
+}))

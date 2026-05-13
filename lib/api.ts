@@ -100,8 +100,20 @@ export async function fetchDamDetails(damName: string): Promise<DamData> {
     throw new Error(`Failed to fetch details for ${damName}: ${res.statusText}`)
   }
   const data = await res.json()
-  // Handle Supabase response format that wraps data in a value array
-  return data.value?.[0] || data
+  
+  // Handle different response formats:
+  // 1. Supabase RPC wraps in value array: { value: [{...}] }
+  // 2. Direct response: {...}
+  // 3. Array response: [{...}]
+  if (Array.isArray(data)) {
+    if (data.length === 0) throw new Error(`No data found for dam: ${damName}`)
+    return data[0]
+  }
+  if (data.value && Array.isArray(data.value)) {
+    if (data.value.length === 0) throw new Error(`No data found for dam: ${damName}`)
+    return data.value[0]
+  }
+  return data
 }
 
 export async function fetchAllDamPredictions(): Promise<{

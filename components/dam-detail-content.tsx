@@ -69,7 +69,8 @@ export function DamDetailContent({ params }: DamDetailContentProps) {
     (d) => d.dam.toLowerCase() === damName.toLowerCase()
   )
 
-  const hasError = damsError || detailsError || (!damsLoading && !dam)
+  // Determine if there's an actual error (not just missing data with fallback available)
+  const hasError = (!damsLoading && !dam && !damsUsingFallback && !historyUsingFallback)
   const isUsingFallback = damsUsingFallback || detailsUsingFallback || historyUsingFallback
 
   return (
