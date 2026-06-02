@@ -13,7 +13,7 @@ import { SummaryStats } from "@/components/summary-stats"
 import { ErrorState } from "@/components/error-state"
 import { DataInfo } from "@/components/data-info"
 import { Droplet } from "lucide-react"
-import { CITY_SYSTEMS, CITY_CODES } from "@/lib/city-dams"
+import { CITY_SYSTEMS, matchesCitySystem } from "@/lib/city-dams"
  
 const RISK_ORDER: Record<RiskLevel, number> = {
   critical: 0,
@@ -62,10 +62,7 @@ export function DashboardContent() {
     // When a city is selected we show only its specific dams,
     // regardless of the province filter (reset province when city is picked).
     if (city !== "all") {
-      const cityDams = new Set(
-        CITY_SYSTEMS[city as keyof typeof CITY_SYSTEMS]?.dams ?? []
-      )
-      result = result.filter((d) => cityDams.has(d.dam))
+      result = result.filter((d) => matchesCitySystem(d.dam, city))
     }
  
     // Sort

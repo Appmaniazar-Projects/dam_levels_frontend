@@ -6,6 +6,20 @@ export interface CitySystem {
   dams: string[]
 }
 
+export function normalizeDamName(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim()
+}
+
+export function matchesCitySystem(damName: string, cityCode: string): boolean {
+  const names = CITY_SYSTEMS[cityCode]?.dams ?? []
+  const normalizedDam = normalizeDamName(damName)
+
+  return names.some((name) => normalizeDamName(name) === normalizedDam)
+}
+
 export const CITY_SYSTEMS: Record<string, CitySystem> = {
   ct: {
     label: "Cape Town",

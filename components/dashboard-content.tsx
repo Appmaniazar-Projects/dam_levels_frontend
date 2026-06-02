@@ -13,7 +13,7 @@ import { SummaryStats } from "@/components/summary-stats"
 import { ErrorState } from "@/components/error-state"
 import { DataInfo } from "@/components/data-info"
 import { Droplets } from "lucide-react"
-import { CITY_SYSTEMS } from "@/lib/city-dams"
+import { CITY_SYSTEMS, matchesCitySystem } from "@/lib/city-dams"
 
 const RISK_ORDER: Record<RiskLevel, number> = {
   critical: 0,
@@ -70,10 +70,7 @@ export function DashboardContent() {
 
     // Filter by city water supply system (takes precedence over province)
     if (city !== "all") {
-      const cityDams = new Set(
-        CITY_SYSTEMS[city as keyof typeof CITY_SYSTEMS]?.dams ?? []
-      )
-      result = result.filter((d) => cityDams.has(d.dam))
+      result = result.filter((d) => matchesCitySystem(d.dam, city))
     } else if (province !== "all") {
       result = result.filter((d) => d.region === province)
     }
