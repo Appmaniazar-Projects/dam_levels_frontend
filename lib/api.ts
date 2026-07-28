@@ -6,6 +6,30 @@ if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
   console.log("🌊 Dam Levels API Base URL:", API_BASE_URL || "(not configured)")
 }
 
+function unwrapResponse<T>(data: any): T {
+  if (Array.isArray(data)) {
+    if (data.length === 1 && data[0] && typeof data[0] === "object" && !Array.isArray(data[0])) {
+      return data[0] as T
+    }
+    return data as T
+  }
+
+  if (data && typeof data === "object" && "value" in data) {
+    const { value } = data as { value: unknown }
+
+    if (Array.isArray(value)) {
+      if (value.length === 1 && value[0] && typeof value[0] === "object" && !Array.isArray(value[0])) {
+        return value[0] as T
+      }
+      return value as T
+    }
+
+    return value as T
+  }
+
+  return data as T
+}
+
 export async function fetchLatestDams(): Promise<DamData[]> {
   if (!API_BASE_URL) {
     throw new Error("API_BASE_URL is not configured. Please set NEXT_PUBLIC_API_BASE_URL in your environment variables.")
@@ -16,8 +40,7 @@ export async function fetchLatestDams(): Promise<DamData[]> {
     throw new Error(`Failed to fetch dam data: ${res.statusText}`)
   }
   const data = await res.json()
-  // Handle Supabase response format that wraps data in a value array
-  return data.value || data
+  return unwrapResponse<DamData[]>(data)
 }
 
 export async function fetchDamHistory(damName: string): Promise<DamHistory[]> {
@@ -30,8 +53,7 @@ export async function fetchDamHistory(damName: string): Promise<DamHistory[]> {
     throw new Error(`Failed to fetch history for ${damName}: ${res.statusText}`)
   }
   const data = await res.json()
-  // Handle Supabase response format that wraps data in a value array
-  return data.value || data
+  return unwrapResponse<DamHistory[]>(data)
 }
 
 export async function fetchAllDamsHistory(): Promise<Record<string, DamHistory[]>> {
@@ -63,8 +85,16 @@ export async function fetchDataInfo(): Promise<{
     throw new Error(`Failed to fetch data info: ${res.statusText}`)
   }
   const data = await res.json()
-  // Handle Supabase response format that wraps data in a value array
-  return data.value?.[0] || data
+  return unwrapResponse<{
+    latest_update: string
+    total_dams: number
+    data_range?: { start: string; end: string }
+    update_frequency: string
+    weekly_calculation: string
+    yearly_calculation?: string
+    province_status?: Record<string, unknown>
+    data_freshness?: Record<string, unknown>
+  }>(data)
 }
 
 export async function fetchDamPrediction(damName: string): Promise<{
@@ -100,20 +130,14 @@ export async function fetchDamDetails(damName: string): Promise<DamData> {
     throw new Error(`Failed to fetch details for ${damName}: ${res.statusText}`)
   }
   const data = await res.json()
-  
-  // Handle different response formats:
-  // 1. Supabase RPC wraps in value array: { value: [{...}] }
-  // 2. Direct response: {...}
-  // 3. Array response: [{...}]
-  if (Array.isArray(data)) {
-    if (data.length === 0) throw new Error(`No data found for dam: ${damName}`)
-    return data[0]
+  const result = unwrapResponse<DamData>(data)
+
+  if (Array.isArray(result)) {
+    if (result.length === 0) throw new Error(`No data found for dam: ${damName}`)
+    return result[0]
   }
-  if (data.value && Array.isArray(data.value)) {
-    if (data.value.length === 0) throw new Error(`No data found for dam: ${damName}`)
-    return data.value[0]
-  }
-  return data
+
+  return result
 }
 
 export async function fetchAllDamPredictions(): Promise<{
