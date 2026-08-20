@@ -9,6 +9,7 @@ export interface DamData {
   yearly_change: number | null
   risk: RiskLevel
   photo_url?: string
+  station_code?: string
   latitude?: number
   longitude?: number
   full_supply_capacity?: number

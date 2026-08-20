@@ -152,6 +152,33 @@ export function DamDetails({ dam }: DamDetailsProps) {
         </CardContent>
       </Card>
 
+      {/* DWS Historical Chart */}
+      {dam.station_code && (
+        <Card className="overflow-hidden">
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <Calendar className="size-4" />
+              <CardTitle>DWS Historical Chart</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent className="p-0">
+            <img
+              src={`https://www.dws.gov.za/Hydrology/Weekly/Photo.aspx?photo=${dam.station_code}.jpg`}
+              alt={`DWS historical storage chart for ${dam.dam}`}
+              className="w-full object-contain bg-white"
+              onError={(e) => {
+                e.currentTarget.style.display = "none"
+              }}
+            />
+          </CardContent>
+          <CardContent className="pt-0">
+            <p className="text-xs text-muted-foreground">
+              Chart sourced directly from the Department of Water and Sanitation.
+            </p>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Location */}
       {dam.latitude && dam.longitude && (
         <Card>

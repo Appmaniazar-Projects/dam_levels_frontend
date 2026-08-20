@@ -71,10 +71,10 @@ export async function fetchAllDamsHistory(): Promise<Record<string, DamHistory[]
 export async function fetchDataInfo(): Promise<{
   latest_update: string
   total_dams: number
-  data_range: { start: string; end: string }
+  data_range?: { start: string; end: string }
   update_frequency: string
   weekly_calculation: string
-  yearly_calculation: string
+  yearly_calculation?: string
 }> {
   if (!API_BASE_URL) {
     throw new Error("API_BASE_URL is not configured. Please set NEXT_PUBLIC_API_BASE_URL in your environment variables.")
